@@ -43,8 +43,8 @@
       animation: fadeInDown 1s ease-out;
     }
 
-    #header-buttons {
-      position: absolute;
+    .top-buttons {
+      position: fixed;
       top: 12px;
       right: 20px;
       display: flex;
@@ -52,8 +52,7 @@
       z-index: 101;
     }
 
-    #back-button,
-    #other-button {
+    .top-buttons button {
       color: white;
       border: none;
       padding: 10px 20px;
@@ -149,10 +148,12 @@
 <body>
   <div id="header">
     UBLAE
-    <div id="header-buttons">
-      <button id="other-button" onclick="window.location.href='other.html'">OTHER</button>
-      <button id="back-button" onclick="window.location.href='index.html'">BACK</button>
-    </div>
+  </div>
+
+  <!-- Beide knoppen rechtsboven -->
+  <div class="top-buttons">
+    <button id="other-button" onclick="window.location.href='other.html'">OTHER</button>
+    <button id="back-button" onclick="window.location.href='index.html'">BACK</button>
   </div>
 
   <div id="video-container">
