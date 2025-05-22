@@ -104,13 +104,20 @@
     #channel-buttons {
       margin-top: 40px;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
       animation: fadeIn 2s ease-in;
     }
 
-    #channel-buttons button {
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .button-row button {
       padding: 12px 25px;
       font-size: 17px;
       background: linear-gradient(45deg, #00c3ff, #0047ff);
@@ -123,7 +130,7 @@
       transition: all 0.3s ease;
     }
 
-    #channel-buttons button:hover {
+    .button-row button:hover {
       transform: scale(1.15);
       background: linear-gradient(45deg, #ff00e0, #8000ff);
       box-shadow: 0 0 20px #fff;
@@ -150,7 +157,6 @@
     UBLAE
   </div>
 
-  <!-- Beide knoppen rechtsboven -->
   <div class="top-buttons">
     <button id="other-button" onclick="window.location.href='other.html'">OTHER</button>
     <button id="back-button" onclick="window.location.href='index.html'">BACK</button>
@@ -161,11 +167,28 @@
   </div>
 
   <div id="channel-buttons">
-    <div>
+    <!-- Rij 1 -->
+    <div class="button-row">
       <button onclick="switchStream('bein1')">B*in Sports 1</button>
       <button onclick="switchStream('tnt1')">T*T SPORTS 1</button>
       <button onclick="switchStream('espn1')">E*PN 1 NL</button>
       <button onclick="switchStream('sky1it')">S*y Sports Calcio Italy</button>
+    </div>
+
+    <!-- Rij 2 -->
+    <div class="button-row">
+      <button onclick="switchStream('extra1')">Extra Kanaal 1</button>
+      <button onclick="switchStream('extra2')">Extra Kanaal 2</button>
+      <button onclick="switchStream('extra3')">Extra Kanaal 3</button>
+      <button onclick="switchStream('extra4')">Extra Kanaal 4</button>
+    </div>
+
+    <!-- Rij 3 -->
+    <div class="button-row">
+      <button onclick="switchStream('extra5')">Extra Kanaal 5</button>
+      <button onclick="switchStream('extra6')">Extra Kanaal 6</button>
+      <button onclick="switchStream('extra7')">Extra Kanaal 7</button>
+      <button onclick="switchStream('extra8')">Extra Kanaal 8</button>
     </div>
   </div>
 
@@ -175,6 +198,16 @@
       tnt1: 'https://ublae-190369420.hf.space/watch/aHR0cHM6Ly9uZnNuZXcubmV3a3NvLnJ1L25mcy9wcmVtaXVtMzEvbW9uby5tM3U4.m3u8',
       espn1: 'https://ublae-190369420.hf.space/watch/aHR0cHM6Ly96ZWtvbmV3Lm5ld2tzby5ydS96ZWtvL3ByZW1pdW0zNzkvbW9uby5tM3U4.m3u8',
       sky1it: 'https://ublae-190369420.hf.space/watch/aHR0cHM6Ly93aW5kbmV3Lm5ld2tzby5ydS93aW5kL3ByZW1pdW04NzAvbW9uby5tM3U4.m3u8',
+
+      // Extra streams (dummy links — vervang indien nodig)
+      extra1: 'https://example.com/extra1.m3u8',
+      extra2: 'https://example.com/extra2.m3u8',
+      extra3: 'https://example.com/extra3.m3u8',
+      extra4: 'https://example.com/extra4.m3u8',
+      extra5: 'https://example.com/extra5.m3u8',
+      extra6: 'https://example.com/extra6.m3u8',
+      extra7: 'https://example.com/extra7.m3u8',
+      extra8: 'https://example.com/extra8.m3u8',
     };
 
     let hls;
@@ -192,7 +225,7 @@
     }
 
     window.onload = function () {
-      switchStream('trt1');
+      switchStream('bein1');
     };
   </script>
 </body>
