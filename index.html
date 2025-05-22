@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Giriş | UBLAE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: url('https://www.decovita.com.tr/uploads/productvitrin/FULL-BLACK.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1;
+    }
+
+    .login-box {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+      text-align: center;
+      animation: fadeIn 1.5s ease;
+    }
+
+    .login-box h2 {
+      color: white;
+      margin-bottom: 20px;
+    }
+
+    .login-box input {
+      width: 250px;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 20px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .login-box button {
+      padding: 12px 25px;
+      border: none;
+      background-color: #00b894;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .login-box button:hover {
+      background-color: #019875;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(-30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="login-box">
+    <h2>Enter With Password</h2>
+    <input type="password" id="passInput" placeholder="Enter Password">
+    <br />
+    <button onclick="checkPass()">Enter</button>
+  </div>
+
+  <script>
+    function checkPass() {
+      const input = document.getElementById('passInput').value;
+      const encoded = btoa(input); 
+      if (encoded === "aEIwQlVINXBLbjc3czJpR2NQSnU2aG9E") {
+        localStorage.setItem("auth", "ok");
+        window.location.href = "315238.html";
+      } else {
+        alert("WRONG PASSWORD!");
+      }
+    }
+
+    document.getElementById('passInput').addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        checkPass();
+      }
+    });
+  </script>
+</body>
+</html>
