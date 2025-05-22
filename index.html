@@ -90,23 +90,30 @@
     <button onclick="checkPass()">Enter</button>
   </div>
 
-  <script>
-    function checkPass() {
-      const input = document.getElementById('passInput').value;
-      const encoded = btoa(input); 
-      if (encoded === "aEIwQlVINXBLbjc3czJpR2NQSnU2aG9E") {
-        localStorage.setItem("auth", "ok");
-        window.location.href = "315238.html";
-      } else {
-        alert("WRONG PASSWORD!");
-      }
-    }
+<script>
+  function checkPass() {
+    const input = document.getElementById('passInput').value;
+    const encoded = btoa(input); 
 
-    document.getElementById('passInput').addEventListener("keydown", function (e) {
-      if (e.key === "Enter") {
-        checkPass();
-      }
-    });
-  </script>
+    const validPasswords = [
+      "aEIwQlVINXBLbjc3czJpR2NQSnU2aG9E", 
+      "dGFhcnRqZTM0Mg==" 
+    ];
+
+    if (validPasswords.includes(encoded)) {
+      localStorage.setItem("auth", "ok");
+      window.location.href = "315238.html";
+    } else {
+      alert("WRONG PASSWORD!");
+    }
+  }
+
+  document.getElementById('passInput').addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      checkPass();
+    }
+  });
+</script>
+
 </body>
 </html>
