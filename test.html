@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fella Stream</title>
+  <script src="https://cdn.tutorialjinni.com/hls.js/1.2.1/hls.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: radial-gradient(circle at center, #444 0%, #111 100%);
+      color: white;
+      overflow-x: hidden;
+    }
+    #header {
+      font-size: 32px;
+      font-weight: bold;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 15px 30px;
+      width: 100%;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      animation: fadeInDown 1s ease-out;
+    }
+    #video-container {
+      margin-top: 140px;
+      width: 80%;
+      max-width: 900px;
+      aspect-ratio: 16/9;
+      background-color: #000;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      overflow: hidden;
+      animation: zoomIn 1.2s ease-out;
+      position: relative;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 15px;
+    }
+    #channel-buttons {
+      margin-top: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      animation: fadeIn 2s ease-in;
+    }
+    #channel-buttons button, #back-button, #other-button {
+      padding: 12px 25px;
+      font-size: 17px;
+      background: linear-gradient(45deg, #00c3ff, #0047ff);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+    }
+    #channel-buttons button:hover, #back-button:hover, #other-button:hover {
+      transform: scale(1.15);
+      background: linear-gradient(45deg, #ff00e0, #8000ff);
+      box-shadow: 0 0 20px #fff;
+    }
+    #auth-container {
+      margin-top: 200px;
+      text-align: center;
+    }
+    #auth-container input {
+      padding: 10px;
+      font-size: 16px;
+      margin-right: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+    @keyframes zoomIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      0% { transform: translateY(-50px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div id="auth-container">
+    <h2>Enter Password</h2>
+    <input type="password" id="passwordInput" placeholder="Password...">
+    <button onclick="checkPassword()">Enter</button>
+  </div>
+
+  <div id="header" style="display:none">
+    Fella Stream
+    <button id="back-button" onclick="logout()">Go Back</button>
+    <button id="other-button" onclick="toggleGroup()">Other</button>
+  </div>
+
+  <div id="video-container" style="display:none">
+    <video id="video" controls autoplay></video>
+  </div>
+
+  <div id="channel-buttons" style="display:none"></div>
+
+  <script>
+    const passwords = {
+      'aEIwQlVINFBLbjc3czJpR2NQSnU2aG9E': 'UBLAE',
+      'dGFhcnRqZTM0Mg0K': 'DIĞER'
+    };
+
+    const streams = {
+      UBLAE: {
+        trt1: 'https://tv-trt1.medya.trt.com.tr/master.m3u8',
+        trt2: 'https://51.20.137.71/stream/yt/trt2.m3u8',
+        trtspor: 'https://tv-trtspor1.medya.trt.com.tr/master.m3u8'
+        // voeg hier meer toe
+      },
+      DIĞER: {
+        ahaber: 'http://51.20.137.71/stream/yt/ahaber.m3u8',
+        aspor: 'http://51.20.137.71/stream/ulusal/aspor.m3u8',
+        atv: 'http://51.20.137.71/stream/ulusal/atv.m3u8'
+        // voeg hier meer toe
+      }
+    };
+
+    let currentGroup = '';
+    let hls;
+
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value;
+      const encoded = btoa(input);
+
+      if (passwords[encoded]) {
+        currentGroup = passwords[encoded];
+        document.getElementById('auth-container').style.display = 'none';
+        document.getElementById('header').style.display = 'block';
+        document.getElementById('video-container').style.display = 'block';
+        document.getElementById('channel-buttons').style.display = 'flex';
+        showButtons();
+        switchStream(Object.keys(streams[currentGroup])[0]);
+      } else {
+        alert('Incorrect password.');
+      }
+    }
+
+    function logout() {
+      location.reload();
+    }
+
+    function toggleGroup() {
+      currentGroup = currentGroup === 'UBLAE' ? 'DIĞER' : 'UBLAE';
+      showButtons();
+      switchStream(Object.keys(streams[currentGroup])[0]);
+    }
+
+    function showButtons() {
+      const container = document.getElementById('channel-buttons');
+      container.innerHTML = '';
+      Object.keys(streams[currentGroup]).forEach(key => {
+        const btn = document.createElement('button');
+        btn.innerText = key.toUpperCase();
+        btn.onclick = () => switchStream(key);
+        container.appendChild(btn);
+      });
+    }
+
+    function switchStream(channel) {
+      const video = document.getElementById('video');
+      if (Hls.isSupported()) {
+        if (hls) hls.destroy();
+        hls = new Hls();
+        hls.loadSource(streams[currentGroup][channel]);
+        hls.attachMedia(video);
+      } else {
+        video.src = streams[currentGroup][channel];
+      }
+    }
+  </script>
+</body>
+</html>
